@@ -1,0 +1,35 @@
+name: Launch Price Tracker and update result
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Launch Banana price tracker
+        run: java -jar bpt.jar banana
+
+      - name: Update price to files
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
+          git add data
+          git add bananaItems.txt
+          git commit -m "Update price data automatically within Github runner"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.WF_SECRET }}
