@@ -3,7 +3,7 @@ name: Launch Price Tracker and update result
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 9,21 * * *'
+    - cron: '0 2,14 * * *'
 
 permissions:
   contents: write
